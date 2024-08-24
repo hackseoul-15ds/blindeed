@@ -15,17 +15,16 @@ public class PollService {
     @Autowired
     private PollRepository pollRepository;
 
+    public List<Poll> findAll() {
+        return pollRepository.findAll();
+    }
+
     public List<Condition> findConditionsByPollId(long pollId) {
         return pollRepository.findById(pollId)
             .map(Poll::getConditions).orElse(null);
     }
 
     public Poll findById(long id, String param1, String param2) {
-        // TODO : zkpass authorization
-        if (!zkPassAuthorization(param1, param2)) {
-            throw new RuntimeException("zkPass Authorization failed");
-        }
-
         return pollRepository.findById(id).orElse(null);
     }
 

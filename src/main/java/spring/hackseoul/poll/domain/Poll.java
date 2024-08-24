@@ -15,6 +15,8 @@ public class Poll {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long userId;
+    private String title;
+    private String content;
     private List<PollOption> poolItems;
     private List<Condition> conditions;
 
