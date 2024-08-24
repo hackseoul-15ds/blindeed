@@ -1,7 +1,6 @@
 package spring.hackseoul.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.stereotype.Service;
 
 import spring.hackseoul.user.db.UserRepository;
@@ -18,5 +17,9 @@ public class UserService {
 
     public User findById(long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

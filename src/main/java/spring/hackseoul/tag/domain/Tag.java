@@ -16,6 +16,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String value;
+    private String schemaId;
 
     public Tag() {
     }
