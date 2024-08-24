@@ -34,9 +34,7 @@ public class Poll {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
         private String title;
-
-        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-        private List<Condition> conditions;
+        private int count;
 
         public PollOption() {
         }
@@ -66,7 +64,6 @@ public class Poll {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
         private String value;
-        private long count;
 
         public ConditionValue() {
         }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import spring.hackseoul.poll.db.ConditionValueRepository;
 import spring.hackseoul.poll.db.PollRepository;
 import spring.hackseoul.poll.domain.Poll;
 import spring.hackseoul.poll.domain.Poll.Condition;
@@ -17,9 +16,6 @@ import static java.lang.Long.*;
 public class PollService {
     @Autowired
     private PollRepository pollRepository;
-
-    @Autowired
-    private ConditionValueRepository conditionValueRepository;
 
     public List<Poll> findAll() {
         return pollRepository.findAll();
@@ -50,17 +46,17 @@ public class PollService {
             throw new RuntimeException("Authorization failed");
         }
 
-        poll.getPoolItems().forEach(pollOption -> {
-            pollOption.getConditions().forEach(condition ->
-                condition.getValues().forEach(conditionValue ->
-                    conditionValueRepository.findById(conditionValue.getId())
-                        .ifPresent(value -> value.setCount(value.getCount() + 1))
-                )
-            );
-        });
+        Poll byId = pollRepository.findById(poll.getId()).orElse(null);
 
-        pollRepository.findById(poll.getId())
-            .ifPresent(poll1 -> poll1.setUserId(parseLong(userId)));
+        assert byId != null;
+
+        byId.getPoolItems().forEach(
+            pollOption -> {
+                if (poll.getPoolItems().stream().anyMatch(pollOption1 -> pollOption1.getId() == pollOption.getId())){
+                    pollOption.setCount(pollOption.getCount() + 1);
+                }
+            }
+        );
     }
 
     // TODO : zkpass authorization
