@@ -6,8 +6,8 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Data(staticConstructor = "of")
-@Accessors(chain = true)
+//@Data(staticConstructor = "of")
+//@Accessors(chain = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
