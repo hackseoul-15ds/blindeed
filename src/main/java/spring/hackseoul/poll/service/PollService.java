@@ -10,8 +10,6 @@ import spring.hackseoul.poll.db.PollRepository;
 import spring.hackseoul.poll.domain.Poll;
 import spring.hackseoul.poll.domain.Poll.Condition;
 
-import static java.lang.Long.*;
-
 @Service
 public class PollService {
     @Autowired
@@ -42,10 +40,6 @@ public class PollService {
 
     @Transactional
     public void vote(Poll poll, String userId, String param1, String param2) {
-        if (!zkPassAuthorization(param1, param2)) {
-            throw new RuntimeException("Authorization failed");
-        }
-
         Poll byId = pollRepository.findById(poll.getId()).orElse(null);
 
         assert byId != null;
@@ -57,10 +51,5 @@ public class PollService {
                 }
             }
         );
-    }
-
-    // TODO : zkpass authorization
-    private boolean zkPassAuthorization(String param1, String param2) {
-        return true;
     }
 }

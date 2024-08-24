@@ -35,8 +35,8 @@ public class PollController {
         return ResponseEntity.ok(poll);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Poll> savePoll(@RequestBody Poll poll) {
+    @PostMapping()
+    public ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
         pollService.save(poll);
         return ResponseEntity.ok(poll);
     }
