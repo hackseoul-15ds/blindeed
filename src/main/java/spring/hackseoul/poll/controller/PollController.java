@@ -1,7 +1,6 @@
 package spring.hackseoul.poll.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spring.hackseoul.poll.domain.Poll;
 import spring.hackseoul.poll.service.PollService;
@@ -9,7 +8,7 @@ import spring.hackseoul.poll.service.PollService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/poll")
 public class PollController {
     private final PollService pollService;
