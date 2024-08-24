@@ -44,7 +44,6 @@ public class PollService {
 
     @Transactional
     public void vote(Poll poll, long userId) {
-
         Poll byId = pollRepository.findById(poll.getId()).orElse(null);
 
         assert byId != null;
@@ -60,5 +59,4 @@ public class PollService {
         byId.getUsers().add(userRepository
             .findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
     }
-
 }
