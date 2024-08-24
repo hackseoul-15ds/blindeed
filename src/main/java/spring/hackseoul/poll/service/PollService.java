@@ -23,8 +23,8 @@ public class PollService {
         return pollRepository.findAll();
     }
 
-    public Poll findById(long id) {
-        return pollRepository.findById(id).orElse(null);
+    public Poll findById(long pollId) {
+        return pollRepository.findById(pollId).orElse(null);
     }
 
     @Transactional
@@ -43,10 +43,7 @@ public class PollService {
     }
 
     @Transactional
-    public void vote(Poll poll, long userId, String param1, String param2) {
-        if (!zkPassAuthorization(param1, param2)) {
-            throw new RuntimeException("Authorization failed");
-        }
+    public void vote(Poll poll, long userId) {
 
         Poll byId = pollRepository.findById(poll.getId()).orElse(null);
 
@@ -64,8 +61,4 @@ public class PollService {
             .findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
     }
 
-    // TODO : zkpass authorization
-    private boolean zkPassAuthorization(String param1, String param2) {
-        return true;
-    }
 }

@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import spring.hackseoul.poll.domain.Poll;
 import spring.hackseoul.poll.domain.Poll.Condition;
-import spring.hackseoul.poll.domain.Poll.ConditionValue;
 import spring.hackseoul.poll.domain.Poll.PollOption;
+import spring.hackseoul.tag.domain.Tag;
 import spring.hackseoul.user.domain.User;
 import spring.hackseoul.user.service.UserService;
 
@@ -28,11 +28,11 @@ class PollServiceTest {
 
     @BeforeEach
     public void before() {
-        ConditionValue conditionValue1 = ConditionValue.of()
+        Tag tag1 = Tag.of()
             .setId(1L)
             .setValue("20대");
 
-        ConditionValue conditionValue2 = ConditionValue.of()
+        Tag tag2 = Tag.of()
             .setId(2L)
             .setValue("30대");
 
@@ -40,7 +40,7 @@ class PollServiceTest {
         Condition condition1 = Condition.of()
             .setId(1L)
             .setTitle("나이 조건")
-            .setValues(Arrays.asList(conditionValue1, conditionValue2));
+            .setTags(Arrays.asList(tag1, tag2));
 
         // Create PollOption objects
         PollOption pollOption1 = PollOption.of()
@@ -87,7 +87,7 @@ class PollServiceTest {
         Condition condition1 = Condition.of()
             .setId(1L)
             .setTitle("나이 조건")
-            .setValues(Collections.emptyList());
+            .setTags(Collections.emptyList());
 
         // Create PollOption objects
         PollOption pollOption2 = PollOption.of()
@@ -103,7 +103,7 @@ class PollServiceTest {
             .setConditions(Arrays.asList(condition1));
 
         PollOption expected = pollService.findById(1L).getPollOptions().get(1);
-        pollService.vote(poll, 2L, "test", "test");
+        pollService.vote(poll, 2L);
         PollOption real = pollService.findById(1L).getPollOptions().get(1);
 
         assertThat(expected.getCount()).isLessThan(real.getCount());

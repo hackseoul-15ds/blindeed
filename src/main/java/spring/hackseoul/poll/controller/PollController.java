@@ -46,4 +46,10 @@ public class PollController {
         pollService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/vote")
+    public ResponseEntity<Poll> votePoll(@RequestBody Poll poll, @RequestParam("userId") int userId) {
+        pollService.vote(poll, userId);
+        return ResponseEntity.ok(poll);
+    }
 }

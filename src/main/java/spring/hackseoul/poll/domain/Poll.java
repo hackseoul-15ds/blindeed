@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import spring.hackseoul.tag.domain.Tag;
 import spring.hackseoul.user.domain.User;
 
 @Data(staticConstructor = "of")
@@ -60,22 +61,9 @@ public class Poll {
         private String title;
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-        private List<ConditionValue> values;
+        private List<Tag> tags;
 
         public Condition() {
-        }
-    }
-
-    @Data(staticConstructor = "of")
-    @Accessors(chain = true)
-    @Entity
-    public static class ConditionValue {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
-        private String value;
-
-        public ConditionValue() {
         }
     }
 }
