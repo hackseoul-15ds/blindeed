@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import spring.hackseoul.user.domain.User;
 
-public interface UserRepository {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 }

@@ -1,7 +1,7 @@
 package spring.hackseoul.poll.service;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,15 +12,19 @@ import spring.hackseoul.poll.domain.Poll;
 import spring.hackseoul.poll.domain.Poll.Condition;
 import spring.hackseoul.poll.domain.Poll.ConditionValue;
 import spring.hackseoul.poll.domain.Poll.PollOption;
+import spring.hackseoul.user.domain.User;
+import spring.hackseoul.user.service.UserService;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PollServiceTest {
 
     @Autowired
     private PollService pollService;
+
+    @Autowired
+    private UserService userService;
 
     @BeforeEach
     public void before() {
@@ -56,16 +60,54 @@ class PollServiceTest {
             .setUserId(123L)
             .setTitle("Sample Poll")
             .setContent("This is a sample poll.")
-            .setPoolItems(Arrays.asList(pollOption1, pollOption2))
+            .setPollOptions(Arrays.asList(pollOption1, pollOption2))
             .setConditions(Arrays.asList(condition1));
 
         pollService.save(poll);
+
+        User notValidUser = User.of()
+            .setId(1L)
+            .setUsername("not validUser");
+
+        userService.save(notValidUser);
+
+        User validUser = User.of()
+            .setId(2L)
+            .setUsername("validUser");
+
+        userService.save(validUser);
     }
 
 
     @Test
     public void test() {
-        pollService.findById(1L);
+        Poll byId = pollService.findById(1L);
+        byId.getPollOptions().forEach(pollOption -> assertThat(pollOption.getCount()).isEqualTo(0));
+        // Create Condition objects
+        Condition condition1 = Condition.of()
+            .setId(1L)
+            .setTitle("나이 조건")
+            .setValues(Collections.emptyList());
+
+        // Create PollOption objects
+        PollOption pollOption2 = PollOption.of()
+            .setId(2L)
+            .setTitle("선택 옵션 2");
+
+        // Create Poll object
+        Poll poll = Poll.of()
+            .setId(1L)
+            .setTitle("Sample Poll")
+            .setContent("This is a sample poll.")
+            .setPollOptions(Arrays.asList(pollOption2))
+            .setConditions(Arrays.asList(condition1));
+
+        PollOption expected = pollService.findById(1L).getPollOptions().get(1);
+        pollService.vote(poll, 2L, "test", "test");
+        PollOption real = pollService.findById(1L).getPollOptions().get(1);
+
+        assertThat(expected.getCount()).isLessThan(real.getCount());
+        assertThat(expected.getTitle()).isEqualTo("선택 옵션 2");
     }
 
 }

@@ -9,13 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.hackseoul.poll.db.PollRepository;
 import spring.hackseoul.poll.domain.Poll;
 import spring.hackseoul.poll.domain.Poll.Condition;
-
-import static java.lang.Long.*;
+import spring.hackseoul.user.db.UserRepository;
 
 @Service
 public class PollService {
     @Autowired
     private PollRepository pollRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Poll> findAll() {
         return pollRepository.findAll();
@@ -41,7 +43,7 @@ public class PollService {
     }
 
     @Transactional
-    public void vote(Poll poll, String userId, String param1, String param2) {
+    public void vote(Poll poll, long userId, String param1, String param2) {
         if (!zkPassAuthorization(param1, param2)) {
             throw new RuntimeException("Authorization failed");
         }
@@ -50,13 +52,16 @@ public class PollService {
 
         assert byId != null;
 
-        byId.getPoolItems().forEach(
+        byId.getPollOptions().forEach(
             pollOption -> {
-                if (poll.getPoolItems().stream().anyMatch(pollOption1 -> pollOption1.getId() == pollOption.getId())){
+                if (poll.getPollOptions().stream().anyMatch(pollOption1 -> pollOption1.getId() == pollOption.getId())){
                     pollOption.setCount(pollOption.getCount() + 1);
                 }
             }
         );
+
+        byId.getUsers().add(userRepository
+            .findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
     }
 
     // TODO : zkpass authorization
