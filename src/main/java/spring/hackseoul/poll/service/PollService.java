@@ -25,13 +25,23 @@ public class PollService {
         return pollRepository.findAll();
     }
 
-    public List<Condition> findConditionsByPollId(long pollId) {
-        return pollRepository.findById(pollId)
-            .map(Poll::getConditions).orElse(null);
+    public Poll findById(long id) {
+        return pollRepository.findById(id).orElse(null);
     }
 
-    public Poll findById(long id, String param1, String param2) {
-        return pollRepository.findById(id).orElse(null);
+    @Transactional
+    public void save(Poll poll) {
+        pollRepository.save(poll);
+    }
+
+    @Transactional
+    public void deleteById(long id) {
+        pollRepository.deleteById(id);
+    }
+
+    public List<Condition> findConditionsByPollId(long pollId) {
+        return pollRepository.findById(pollId)
+                .map(Poll::getConditions).orElse(null);
     }
 
     @Transactional
@@ -56,10 +66,5 @@ public class PollService {
     // TODO : zkpass authorization
     private boolean zkPassAuthorization(String param1, String param2) {
         return true;
-    }
-
-    @Transactional
-    public void save(Poll poll) {
-        pollRepository.save(poll);
     }
 }

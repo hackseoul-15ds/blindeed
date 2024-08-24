@@ -56,7 +56,7 @@ class PollServiceTest {
 
         pollService.save(poll);
 
-        Poll byId = pollService.findById(1L, "param1", "param2");
+        Poll byId = pollService.findById(1L);
         byId.getPoolItems().forEach(pollOption -> System.out.println(pollOption.getTitle()));
         byId.getConditions().forEach(condition -> System.out.println(condition.getTitle()));
     }
