@@ -25,8 +25,18 @@ public class PollService {
     @Autowired
     private ConditionRepository conditionRepository;
 
-    public List<Poll> findAll() {
-        return pollRepository.findAll();
+    public List<Poll> findAll(long userId) {
+        List<Poll> polls = pollRepository.findAll();
+        User user = userService.findById(userId);
+
+        for (Poll poll : polls) {
+            if (poll.getUsers().contains(userId)) {
+                poll.setVoted(true);
+            }
+            poll.setConditionConfirmed(checker(poll, user));
+        }
+
+        return polls;
     }
 
     public Poll findById(long pollId, long userId) {

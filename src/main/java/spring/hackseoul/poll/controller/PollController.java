@@ -8,8 +8,13 @@ import spring.hackseoul.poll.service.PollService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 @RestController
 @RequestMapping("/poll")
+@CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
 public class PollController {
     private final PollService pollService;
 
@@ -18,8 +23,8 @@ public class PollController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Poll>> getAllPoll() {
-        List<Poll> polls = pollService.findAll();
+    public ResponseEntity<List<Poll>> getAllPoll(@RequestParam("userId") int userId) {
+        List<Poll> polls = pollService.findAll(userId);
         if (polls.isEmpty()) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
         }

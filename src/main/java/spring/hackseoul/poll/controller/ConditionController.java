@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +21,12 @@ import spring.hackseoul.poll.service.PollService;
 import spring.hackseoul.user.domain.User;
 import spring.hackseoul.user.service.UserService;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+
 @RestController
 @RequestMapping("/condition")
+@CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
 public class ConditionController {
     @Autowired
     private ConditionService conditionService;

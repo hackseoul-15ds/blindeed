@@ -9,8 +9,13 @@ import spring.hackseoul.tag.service.TagService;
 import spring.hackseoul.verifycation.domain.VerificationRequest;
 import spring.hackseoul.verifycation.service.VerificationService;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 @RestController
 @RequestMapping("/verification")
+@CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
 public class VerificationController {
     @Autowired
     private VerificationService verificationService;
