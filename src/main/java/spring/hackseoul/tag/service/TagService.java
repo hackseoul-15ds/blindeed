@@ -14,4 +14,8 @@ public class TagService {
         return tagRepository.findBySchemaId(schemaId);
     }
 
+    public void save(Tag tag) {
+        tagRepository.save(tag);
+    }
+
 }

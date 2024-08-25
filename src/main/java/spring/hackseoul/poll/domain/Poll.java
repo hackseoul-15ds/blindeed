@@ -3,6 +3,8 @@ package spring.hackseoul.poll.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -26,6 +28,7 @@ public class Poll {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Condition> conditions;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "poll_user",
@@ -33,6 +36,12 @@ public class Poll {
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> users = new ArrayList<>();
+
+    @Transient
+    private boolean isVoted;
+
+    @Transient
+    private boolean isConditionConfirmed;
 
     public Poll() {
     }

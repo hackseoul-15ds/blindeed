@@ -26,9 +26,10 @@ public class PollController {
         return ResponseEntity.ok(polls);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Poll> getPollById(@PathVariable("id") int id) {
-        Poll poll = pollService.findById(id);
+    @GetMapping("/{pollId}")
+    public ResponseEntity<Poll> getPollById(@PathVariable("pollId") int pollId,
+                                            @RequestParam("userId") int userId) {
+        Poll poll = pollService.findById(pollId, userId);
         if (poll == null) {
             return ResponseEntity.notFound().build();
         }

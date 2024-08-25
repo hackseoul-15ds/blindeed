@@ -17,6 +17,7 @@ public class Tag {
     private long id;
     private String value;
     private String schemaId;
+    private String displayText;
 
     public Tag() {
     }
