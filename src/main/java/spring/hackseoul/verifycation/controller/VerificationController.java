@@ -24,6 +24,7 @@ public class VerificationController {
     private TagService tagService;
 
     @PostMapping("/{userId}")
+    @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
     public ResponseEntity<Void> verificationRequest(@PathVariable long userId, @RequestBody VerificationRequest verificationRequest) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://52.79.219.227:8000/verify";

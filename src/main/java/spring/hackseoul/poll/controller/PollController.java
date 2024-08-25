@@ -23,6 +23,7 @@ public class PollController {
     }
 
     @GetMapping()
+    @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
     public ResponseEntity<List<Poll>> getAllPoll(@RequestParam("userId") int userId) {
         List<Poll> polls = pollService.findAll(userId);
         if (polls.isEmpty()) {
@@ -32,6 +33,7 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}")
+    @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
     public ResponseEntity<Poll> getPollById(@PathVariable("pollId") int pollId,
                                             @RequestParam("userId") int userId) {
         Poll poll = pollService.findById(pollId, userId);
@@ -42,18 +44,21 @@ public class PollController {
     }
 
     @PostMapping()
+    @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
     public ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
         pollService.save(poll);
         return ResponseEntity.ok(poll);
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
     public ResponseEntity<Void> deletePoll(@PathVariable("id") int id) {
         pollService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/vote")
+    @CrossOrigin(origins = "*", methods = {GET, POST, DELETE})
     public ResponseEntity<Poll> votePoll(@RequestBody Poll poll, @RequestParam("userId") int userId) {
         pollService.vote(poll, userId);
         return ResponseEntity.ok(poll);
